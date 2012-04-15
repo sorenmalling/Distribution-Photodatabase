@@ -1,0 +1,41 @@
+UPGRADING INSTRUCTIONS
+----------------------
+
+This file contains instructions for upgrading your FLOW3 1.0 installation
+to FLOW3 1.1.
+
+PASSWORD HASHING
+----------------
+
+The hashing strategy for password went from salted MD5 over PBKDF2 to Bcrypt.
+Plus it is now possible to use a mix of password hashing strategies, as the
+used strategy is stored in the credentialsSource of an Account.
+
+That means: make sure your default strategy setting matches the used strategy
+for any accounts created before the related changes:
+
+TYPO3:
+  FLOW3:
+    security:
+      cryptography:
+        hashingStrategies:
+          default: bcrypt
+
+If your credentials look like …, you have the … strategy:
+   7kP/laYDXxQ=,iMoNTRTcbY01Q9LSeAaoxV9hq … QEmHm3ottU1yJdw==
+      -> PBKDF2
+   $2a$14$2zNPS6TfbMPCdnxuRlheu.2kZAJ … H3DaYwqqIeAgPzN6kTS
+      -> BCrypt
+   2f1861241e1951f8696f80cf71b43dee,029fc4310e
+      -> salted MD5
+
+YAML SYNTAX
+-----------
+
+The YAML parser has been updated and now behaves different (albeit more correct).
+
+ * Boolean values must no longer be written as y, yes, n, no but as TRUE and
+   FALSE instead.
+ * When using backslashes in strings, those are now handled as escape characters
+   inside double quotes. So if you write class names, better wrap them in single
+   quotes.
